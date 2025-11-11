@@ -1,6 +1,9 @@
 # Stage 1: Build the application
 FROM node:18-alpine AS builder
 
+# Configure npm for Docker BuildKit compatibility
+RUN npm config set strict-ssl false
+
 # Set the working directory
 WORKDIR /app
 
@@ -20,6 +23,9 @@ RUN npm run build
 # Stage 2: Create the production image
 FROM node:18-alpine AS production
 
+# Configure npm for Docker BuildKit compatibility
+RUN npm config set strict-ssl false
+
 # Set the working directory
 WORKDIR /app
 
@@ -27,7 +33,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install only production dependencies
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 # Copy built files from builder
 COPY --from=builder /app/dist ./dist
