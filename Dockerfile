@@ -1,34 +1,43 @@
 # Stage 1: Build the application
-FROM node:14 AS builder
+FROM node:18-alpine AS builder
 
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json (if it exists)
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install --only=production
+# Install all dependencies (including devDependencies for build)
+RUN npm ci
 
-# Copy the rest of the application code
-COPY . .
+# Copy source code
+COPY server ./server
+COPY tsconfig.json ./
+
+# Build TypeScript
+RUN npm run build
 
 # Stage 2: Create the production image
-FROM node:14 AS production
+FROM node:18-alpine AS production
 
 # Set the working directory
 WORKDIR /app
 
-# Copy dependencies from the builder stage
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist # Adjust if using a specific build folder
+# Copy package files
+COPY package*.json ./
+
+# Install only production dependencies
+RUN npm ci --only=production
+
+# Copy built files from builder
+COPY --from=builder /app/dist ./dist
 
 # Set environment variables
 ENV NODE_ENV=production
-ENV PORT=3000 # Change if necessary
+ENV PORT=8080
 
 # Expose the application port
-EXPOSE 3000
+EXPOSE 8080
 
 # Start the application
-CMD ["node", "dist/index.js"] # Change if your entry point is different
+CMD ["node", "dist/index.js"]
