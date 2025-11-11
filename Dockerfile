@@ -4,10 +4,10 @@ FROM node:18-alpine AS builder
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy package files
+COPY package.json package-lock.json ./
 
-# Install all dependencies (including devDependencies for build)
+# Install dependencies
 RUN npm ci
 
 # Copy source code
@@ -24,10 +24,10 @@ FROM node:18-alpine AS production
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
 # Install only production dependencies
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 # Copy built files from builder
 COPY --from=builder /app/dist ./dist

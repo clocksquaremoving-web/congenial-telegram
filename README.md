@@ -143,13 +143,12 @@ The database schema is automatically initialized on startup:
 ```
 .
 ├── Dockerfile              # Multi-stage Docker build
-├── package.json           # Root package.json for Railway
+├── package.json           # Dependencies and scripts
 ├── tsconfig.json          # TypeScript configuration
 ├── .env.example           # Environment variables template
-├── server/
-│   └── src/
-│       ├── index.ts       # Main application file
-│       └── db.ts          # Database configuration
+├── src/
+│   ├── index.ts           # Main application file
+│   └── db.ts              # Database configuration
 └── dist/                  # Compiled JavaScript (generated)
 ```
 
