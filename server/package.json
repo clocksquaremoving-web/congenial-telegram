@@ -1,1 +1,0 @@
-{\n  "name": "congenial-telegram-server",\n  "version": "1.0.0",\n  "description": "A server for the Congenial Telegram project",\n  "main": "index.js",\n  "scripts": {\n    "start": "node index.js",\n    "test": "echo 'No tests specified' && exit 0"\n  },\n  "dependencies": {\n    "express": "^4.17.1",\n    "socket.io": "^4.0.0",\n    "pg": "^8.6.0"\n  }\n}

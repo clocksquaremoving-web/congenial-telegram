@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node server/src/index.ts",
+    "dev": "ts-node src/index.ts",
     "test": "echo 'No tests specified' && exit 0"
   },
   "engines": {
